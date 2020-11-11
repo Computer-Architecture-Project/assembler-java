@@ -127,7 +127,7 @@ public class Lexer {
         this.advance();
         return new Token(tokenType, tokenType.value, this.line, this.column);
       } catch(Exception exception) {
-        throw exception;
+        return this.specialCharacter();
       }
       
     }
