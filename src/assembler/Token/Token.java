@@ -3,16 +3,19 @@ package assembler.Token;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Token {
-  private TokenType type;
-  private String value;
-  private Integer line;
-  private Integer column;
+public class Token <V> {
+  public TokenType type;
+  public V value;
+  public Integer line;
+  public Integer column;
 
-  public Token(TokenType type, String value, Integer line, Integer column) {
+  public Token(TokenType type, V value) {
     this.type = type;
-    // TODO: value store AnyType
-    // value: Integer | Character | Null
+    this.value = value;
+  }
+
+  public Token(TokenType type, V value, Integer line, Integer column) {
+    this.type = type;
     this.value = value;
     this.line = line;
     this.column = column;
