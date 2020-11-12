@@ -6,6 +6,7 @@ import assembler.AbstractSyntaxTree.Label;
 import assembler.AbstractSyntaxTree.Offset;
 import assembler.AbstractSyntaxTree.Register;
 import assembler.AbstractSyntaxTree.Unary;
+import assembler.AbstractSyntaxTree.Number;
 
 public abstract class Instruction<F0, F1, F2> extends AST {
   private Integer address;
@@ -66,9 +67,9 @@ public abstract class Instruction<F0, F1, F2> extends AST {
         } else if (this.field0 instanceof Offset) {
           Unary unary = ((Offset)this.field0).unary;
           Object operator = unary != null ? unary.value : '+';
-          Integer integer = ((Offset)this.field0).integer;
+          Number integer = ((Offset)this.field0).integer;
 
-          return operator.equals('+') ? integer : -integer;
+          return operator.equals('+') ? (Integer)integer.value : -((Integer)integer.value);
         }
       }
 
@@ -80,9 +81,9 @@ public abstract class Instruction<F0, F1, F2> extends AST {
         } else if (this.field1 instanceof Offset) {
           Unary unary = ((Offset)this.field1).unary;
           Object operator = unary != null ? unary.value : '+';
-          Integer integer = ((Offset)this.field1).integer;
+          Number integer = ((Offset)this.field1).integer;
 
-          return operator.equals('+') ? integer : -integer;
+          return operator.equals('+') ? (Integer)integer.value : -((Integer)integer.value);
         }
       }
 
@@ -90,13 +91,13 @@ public abstract class Instruction<F0, F1, F2> extends AST {
         if (this.field2 instanceof Label) {
 
           return ((Label)this.field2).value;
-          
+
         } else if (this.field2 instanceof Offset) {
           Unary unary = ((Offset)this.field2).unary;
           Object operator = unary != null ? unary.value : '+';
-          Integer integer = ((Offset)this.field2).integer;
+          Number integer = ((Offset)this.field2).integer;
 
-          return operator.equals('+') ? integer : -integer;
+          return operator.equals('+') ? (Integer)integer.value : -((Integer)integer.value);
         }
       }
 
