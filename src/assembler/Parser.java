@@ -6,7 +6,7 @@ import assembler.Token.TokenType;
 public class Parser {
   private Lexer lexer;
   private Integer address;
-  private Token currentToken;
+  private Token<?> currentToken;
 
   public Parser(Lexer lexer) {
     this.lexer = lexer;
@@ -14,7 +14,7 @@ public class Parser {
     this.skipEmptyLine();
   }
 
-  private Token getNextToken() {
+  private Token<?> getNextToken() {
     return this.lexer.getNextToken();
   }
 

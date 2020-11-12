@@ -27,7 +27,8 @@ public abstract class Instruction<F0, F1, F2> extends AST {
   }
 
   // public Object field0() {
-  //   return this.field0.value;
+
+  //   return this.field0;
   // }
 
   // public Object field1() {

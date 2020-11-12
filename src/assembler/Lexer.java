@@ -102,7 +102,7 @@ public class Lexer {
     return token;
   } 
 
-  public Token getNextToken() {
+  public Token<?> getNextToken() {
     while (this.currentCharacter != null) {
       if (this.currentCharacter == '\n') {
         return this.newLine();
@@ -125,8 +125,7 @@ public class Lexer {
       try {
         TokenType tokenType = TokenType.valueOf(this.currentCharacter.toString());
         this.advance();
-        
-        return new Token(tokenType, tokenType.value, this.line, this.column);
+        return new Token<>(tokenType, tokenType.value, this.line, this.column);
       } catch(Exception exception) {
         return this.specialCharacter();
       }
