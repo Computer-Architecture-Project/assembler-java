@@ -7,4 +7,8 @@ public class FillType extends Instruction<Object, Void, Void> {
     super(address, command);
     this.field0 = field0;
   }
+
+  public Object field0() {
+    return this.offset(0);
+  }
 }

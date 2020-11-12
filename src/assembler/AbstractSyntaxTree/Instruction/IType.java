@@ -8,6 +8,10 @@ public class IType extends Instruction<Register, Register, Object> {
     super(address, command);
     this.field0 = field0;
     this.field1 = field1;
-    // this.field2 = field2;
+    this.field2 = field2;
+  }
+
+  public Object field2() {
+    return this.offset(2);
   }
 }

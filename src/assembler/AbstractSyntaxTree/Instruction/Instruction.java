@@ -2,6 +2,10 @@ package assembler.AbstractSyntaxTree.Instruction;
 
 import assembler.AbstractSyntaxTree.AST;
 import assembler.AbstractSyntaxTree.Command;
+import assembler.AbstractSyntaxTree.Label;
+import assembler.AbstractSyntaxTree.Offset;
+import assembler.AbstractSyntaxTree.Register;
+import assembler.AbstractSyntaxTree.Unary;
 
 public abstract class Instruction<F0, F1, F2> extends AST {
   private Integer address;
@@ -26,20 +30,77 @@ public abstract class Instruction<F0, F1, F2> extends AST {
     return this.command.value;
   }
 
-  // public Object field0() {
+  public Object field0() {
+    if (this.field0 instanceof Register) {
+      return ((Register)this.field0).value;
+    }
 
-  //   return this.field0;
-  // }
+    return null;
+  }
 
-  // public Object field1() {
-  //   return this.field1.value;
-  // }
+  public Object field1() {
+    if (this.field1 instanceof Register) {
+      return ((Register)this.field1).value;
+    }
 
-  // public Object field2() {
-  //   return this.field2.value;
-  // }
+    return null;
+  }
 
-  // private Integer offset(Integer field) {
-    
-  // }
+  public Object field2() {
+    if (this.field2 instanceof Register) {
+      return ((Register)this.field2).value;
+    } else if (this.field2 instanceof Label) {
+      return ((Label)this.field2).value;
+    }
+  
+    return null;
+  }
+
+  protected Object offset(Integer field) {
+    switch(field) {
+      case 0: {
+        if (this.field0 instanceof Label) {
+          
+          return ((Label)this.field0).value;
+
+        } else if (this.field0 instanceof Offset) {
+          Unary unary = ((Offset)this.field0).unary;
+          Object operator = unary != null ? unary.value : '+';
+          Integer integer = ((Offset)this.field0).integer;
+
+          return operator.equals('+') ? integer : -integer;
+        }
+      }
+
+      case 1: {
+        if (this.field1 instanceof Label) {
+
+          return ((Label)this.field1).value;
+
+        } else if (this.field1 instanceof Offset) {
+          Unary unary = ((Offset)this.field1).unary;
+          Object operator = unary != null ? unary.value : '+';
+          Integer integer = ((Offset)this.field1).integer;
+
+          return operator.equals('+') ? integer : -integer;
+        }
+      }
+
+      case 2: {
+        if (this.field2 instanceof Label) {
+
+          return ((Label)this.field2).value;
+          
+        } else if (this.field2 instanceof Offset) {
+          Unary unary = ((Offset)this.field2).unary;
+          Object operator = unary != null ? unary.value : '+';
+          Integer integer = ((Offset)this.field2).integer;
+
+          return operator.equals('+') ? integer : -integer;
+        }
+      }
+
+      default: return null;
+    }
+  }
 }
