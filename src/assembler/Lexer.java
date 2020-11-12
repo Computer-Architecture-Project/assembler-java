@@ -46,8 +46,8 @@ public class Lexer {
     }
   }
 
-  private Token newLine() {
-    Token token = new Token(TokenType.EOL, null, this.line, this.column);
+  private Token<Void> newLine() {
+    Token<Void> token = new Token<Void>(TokenType.EOL, null, this.line, this.column);
     this.advance();
     return token;
   }
@@ -125,12 +125,13 @@ public class Lexer {
       try {
         TokenType tokenType = TokenType.valueOf(this.currentCharacter.toString());
         this.advance();
+        
         return new Token(tokenType, tokenType.value, this.line, this.column);
       } catch(Exception exception) {
         return this.specialCharacter();
       }
       
     }
-    return new Token(TokenType.EOF, null);
+    return new Token<Void>(TokenType.EOF, null);
   }
 }
