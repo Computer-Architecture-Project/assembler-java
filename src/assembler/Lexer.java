@@ -13,7 +13,7 @@ public class Lexer {
   private Integer line;
   private Integer column;
 
-  private final Set<Character> WHITESPACE = new HashSet<Character>(' ', '\t');
+  // private final Set<Character> WHITESPACE = new HashSet<Character>(' ', '\t');
 
   public Lexer(String text) {
     if (text.length() > 0) {
@@ -30,7 +30,7 @@ public class Lexer {
     this.column = 1;
   }
 
-  private void advance() {
+  public void advance() {
     if (this.currentCharacter == '\n') {
       this.line += 1;
       this.column = 0;
@@ -48,12 +48,16 @@ public class Lexer {
 
   private Token<Void> newLine() {
     Token<Void> token = new Token<Void>(TokenType.EOL, null, this.line, this.column);
+    // System.out.println(token.type + " " + token.value);
     this.advance();
     return token;
   }
 
   private void skipWhiteSpace() {
-    while (this.currentCharacter != null && WHITESPACE.contains(this.currentCharacter)) {
+    // while (this.currentCharacter != null && WHITESPACE.contains(this.currentCharacter)) {
+    //   this.advance();
+    // }
+    while (this.currentCharacter != null && (this.currentCharacter == ' ' || this.currentCharacter == '\t')) {
       this.advance();
     }
   }
@@ -77,6 +81,7 @@ public class Lexer {
       token.type = tokenType;
       token.value = value;
     }
+    // System.out.println(token.type + " " + token.value);
 
     return token;
   }
@@ -90,25 +95,29 @@ public class Lexer {
       this.advance();
     }
 
+  
     token.type = TokenType.INT;
     token.value = Integer.parseInt(value);
+    // System.out.println(token.type + " " + token.value);
 
     return token;
   }
 
   private Token<Character> specialCharacter() {
     Token<Character> token = new Token<Character>(TokenType.SPC, this.currentCharacter, this.line, this.column);
+    // System.out.println(token.type + " " + token.value);
     this.advance();
     return token;
   } 
 
   public Token<?> getNextToken() {
     while (this.currentCharacter != null) {
+      // System.out.println(this.currentCharacter);
       if (this.currentCharacter == '\n') {
         return this.newLine();
       }
 
-      if (WHITESPACE.contains(this.currentCharacter)) {
+      if (this.currentCharacter == ' ' || this.currentCharacter == '\t') {
         this.skipWhiteSpace();
         continue;
       }
@@ -123,14 +132,26 @@ public class Lexer {
   
       // TODO: try catch
       try {
-        TokenType tokenType = TokenType.valueOf(this.currentCharacter.toString());
+        TokenType tokenType = TokenType.getEnum(this.currentCharacter.toString());
+        System.out.println(tokenType);
         this.advance();
         return new Token<>(tokenType, tokenType.value, this.line, this.column);
-      } catch(Exception exception) {
+      } catch(IllegalArgumentException exception) {
         return this.specialCharacter();
-      }
-      
+      } 
     }
     return new Token<Void>(TokenType.EOF, null);
+  }
+
+  public void log() {
+    Token<?> token = this.getNextToken();
+    while(this.currentCharacter != null) {
+      System.out.println(token.type + " " + token.value);
+      token = this.getNextToken();
+    }
+    token = this.getNextToken();
+    System.out.println(token.type + " " + token.value);
+    // token = this.getNextToken();
+    // System.out.println(token.type + " " + token.value);
   }
 }

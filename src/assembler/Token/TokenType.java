@@ -1,6 +1,8 @@
 package assembler.Token;
 
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 public enum TokenType {
@@ -28,8 +30,30 @@ public enum TokenType {
   EOF("END_OF_FILE");
 
   public final String value;
+  private static Map<String, TokenType> valueEnumMap;
+
   private TokenType(String value) {
     this.value = value;
+  }
+
+  static {
+    createValueEnumMap();
+  }
+
+  public static void createValueEnumMap() {
+    valueEnumMap = new HashMap<String, TokenType>();
+    for(TokenType type: TokenType.values()) {
+      valueEnumMap.put(type.value, type);
+    }
+  }
+
+  public static TokenType getEnum(String value) {
+    // No value in token type
+    if (valueEnumMap.get(value) == null) {
+      throw new IllegalArgumentException();
+    }
+
+    return valueEnumMap.get(value);
   }
 
   public static Set<TokenType> R_TYPE() {
