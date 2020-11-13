@@ -120,7 +120,7 @@ public class Lexer {
       // TODO: try catch
       try {
         TokenType tokenType = TokenType.getEnum(this.currentCharacter.toString());
-        System.out.println(tokenType);
+        // System.out.println(tokenType);
         this.advance();
         return new Token<>(tokenType, tokenType.value, this.line, this.column);
       } catch(IllegalArgumentException exception) {
