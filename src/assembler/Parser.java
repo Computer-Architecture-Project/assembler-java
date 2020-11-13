@@ -45,7 +45,6 @@ public class Parser {
 
   // Check Token Type Before Get Next Token
   private void eat(Object type) {
-    // System.out.println("[eat]");
     if (type == null) {
       this.currentToken = this.getNextToken();
     } if (type instanceof TokenType) {
@@ -64,21 +63,18 @@ public class Parser {
   }
 
   public Label label() {
-    // System.out.println("[label]");
     Label node = new Label(this.currentToken);
     this.eat(TokenType.WORD);
     return node;
   }
 
   public Register register() {
-    // System.out.println("[register]");
     Register node = new Register(this.currentToken);
     this.eat(TokenType.INT);
     return node;
   }
 
   public Unary unary() {
-    // System.out.println("[unary]");
     Unary node = null;
 
     if (this.currentToken.type == TokenType.PLUS || this.currentToken.type == TokenType.MINUS) {
@@ -90,14 +86,12 @@ public class Parser {
   }
 
   public Number number() {
-    // System.out.println("[number]");
     Number node = new Number(this.currentToken);
     this.eat(TokenType.INT);
     return node;
   }
 
   public Offset offset() {
-    // System.out.println("[offset]");
     Unary unaryNode = this.unary();
     Number numberNode = this.number();
     Offset node = new Offset(unaryNode, numberNode);
@@ -105,7 +99,6 @@ public class Parser {
   }
 
   public Object field() {
-    // System.out.println("[field]");
     Object node;
 
     if (
@@ -122,7 +115,6 @@ public class Parser {
   }
 
   public Command opcode() {
-    // System.out.println("[opcode]");
     Command node = new Command(this.currentToken);
     this.eat(TokenType.MNEMONIC());
     return node;
@@ -130,14 +122,12 @@ public class Parser {
 
   // return address and move to next address
   private Integer address() {
-    // System.out.println("[address]");
     Integer node = this.address;
     this.address += 1;
     return node;
   }
 
   public RType rType() {
-    // System.out.println("[r type]");
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Register field0Node = this.register();
@@ -148,7 +138,6 @@ public class Parser {
   }
 
   public IType iType() {
-    // System.out.println("[i type]");
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Register field0Node = this.register();
@@ -159,7 +148,6 @@ public class Parser {
   }
 
   public JType jType() {
-    // System.out.println("[j type]");
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Register field0Node = this.register();
@@ -169,7 +157,6 @@ public class Parser {
   }
 
   public OType oType() {
-    // System.out.println("[o type]");
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
 
@@ -177,7 +164,6 @@ public class Parser {
   }
 
   public FillType fillType() {
-    // System.out.println("[fill type]");
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Object fieldNode = this.field();
@@ -185,7 +171,6 @@ public class Parser {
   }
 
   public Instruction<?, ?, ?> instruction() {
-    // System.out.println("[instruction]");
     if (TokenType.R_TYPE().contains(this.currentToken.type)) {
       return this.rType();
     }
@@ -215,13 +200,11 @@ public class Parser {
       this.currentToken.type != TokenType.EOL && 
       this.currentToken.type != TokenType.EOF
     ) {
-      // System.out.println(this.currentToken.type + " " + this.currentToken.value);
       this.eat(null);
     }
   }
 
   public Instruction<?, ?, ?> statement() {
-    // System.out.println("[statement]");
     Instruction<?, ?, ?> instructionNode = this.instruction();
     this.skipComment();
 
@@ -233,7 +216,6 @@ public class Parser {
   }
 
   public ArrayList<Instruction<?, ?, ?>> statementList() {
-    // System.out.println("[statement list]");
     ArrayList<Instruction<?, ?, ?>> statements = new ArrayList<Instruction<?, ?, ?>>();
     while (TokenType.MNEMONIC().contains(this.currentToken.type)) {
       statements.add(this.statement());
@@ -245,22 +227,18 @@ public class Parser {
   }
 
   public Method method() {
-    // System.out.println("[method]");
     Label labelNode = this.label();
     ArrayList<Instruction<?, ?, ?>> statementsNode = this.statementList();
     return new Method(labelNode, statementsNode);
   }
 
   public Initial initial() {
-    // System.out.println("[initial]");
     return new Initial(this.statementList());
   }
 
   public ParsedTree program() {
-    // System.out.println("[program]");
     Initial initialNode = null;
 
-    // System.out.println(this.currentToken.type);
     if (TokenType.MNEMONIC().contains(this.currentToken.type)) {
       initialNode = this.initial();
     }
@@ -279,13 +257,5 @@ public class Parser {
     ParsedTree node = this.program();
     // throw not end of file error
     return node;
-  }
-
-  public void log() {
-      while (this.currentToken.type != TokenType.EOL) { 
-        System.out.println(this.currentToken.type + " " + this.currentToken.value);
-        this.getNextToken(); 
-      }
-      System.out.println(this.currentToken.type + " " + this.currentToken.value);
   }
 }

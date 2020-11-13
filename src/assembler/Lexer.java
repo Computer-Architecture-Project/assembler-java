@@ -1,8 +1,5 @@
 package assembler;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import assembler.Token.Token;
 import assembler.Token.TokenType;
 
@@ -12,8 +9,6 @@ public class Lexer {
   private Character currentCharacter;
   private Integer line;
   private Integer column;
-
-  // private final Set<Character> WHITESPACE = new HashSet<Character>(' ', '\t');
 
   public Lexer(String text) {
     if (text.length() > 0) {
@@ -48,15 +43,11 @@ public class Lexer {
 
   private Token<Void> newLine() {
     Token<Void> token = new Token<Void>(TokenType.EOL, null, this.line, this.column);
-    // System.out.println(token.type + " " + token.value);
     this.advance();
     return token;
   }
 
   private void skipWhiteSpace() {
-    // while (this.currentCharacter != null && WHITESPACE.contains(this.currentCharacter)) {
-    //   this.advance();
-    // }
     while (this.currentCharacter != null && (this.currentCharacter == ' ' || this.currentCharacter == '\t')) {
       this.advance();
     }
@@ -81,7 +72,6 @@ public class Lexer {
       token.type = tokenType;
       token.value = value;
     }
-    // System.out.println(token.type + " " + token.value);
 
     return token;
   }
@@ -98,21 +88,18 @@ public class Lexer {
   
     token.type = TokenType.INT;
     token.value = Integer.parseInt(value);
-    // System.out.println(token.type + " " + token.value);
 
     return token;
   }
 
   private Token<Character> specialCharacter() {
     Token<Character> token = new Token<Character>(TokenType.SPC, this.currentCharacter, this.line, this.column);
-    // System.out.println(token.type + " " + token.value);
     this.advance();
     return token;
   } 
 
   public Token<?> getNextToken() {
     while (this.currentCharacter != null) {
-      // System.out.println(this.currentCharacter);
       if (this.currentCharacter == '\n') {
         return this.newLine();
       }
@@ -141,17 +128,5 @@ public class Lexer {
       } 
     }
     return new Token<Void>(TokenType.EOF, null);
-  }
-
-  public void log() {
-    Token<?> token = this.getNextToken();
-    while(this.currentCharacter != null) {
-      System.out.println(token.type + " " + token.value);
-      token = this.getNextToken();
-    }
-    token = this.getNextToken();
-    System.out.println(token.type + " " + token.value);
-    // token = this.getNextToken();
-    // System.out.println(token.type + " " + token.value);
   }
 }

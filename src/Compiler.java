@@ -15,11 +15,9 @@ public class Compiler {
     Path path = Path.of("src/examples/assembly.txt");
     String text = Files.readString(path);
     Lexer lexer = new Lexer(text);
-    // lexer.log();
     Parser parser = new Parser(lexer);
-    // parser.log();
     ParsedTree tree = parser.parse();
-    // System.out.println(tree.initial.statements.size());
+    
     for (Instruction<?, ?, ?> statement : tree.initial.statements) {
       System.out.print(statement.address() + " ");
       System.out.print(statement.command() + " ");
@@ -38,7 +36,6 @@ public class Compiler {
         System.out.println(statement.field2());
       }
     }
-    // System.out.println(tree.methods.size());
     
   }
 }
