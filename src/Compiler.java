@@ -11,6 +11,11 @@ import assembler.AbstractSyntaxTree.Instruction.Instruction;
 import assembler.AbstractSyntaxTree.ParsedTree.Method;
 import assembler.AbstractSyntaxTree.ParsedTree.ParsedTree;
 import assembler.Program.Program;
+import error.ErrorCode;
+import error.InstructionError;
+import error.LexerError;
+import error.ParserError;
+import error.SemanticError;
 
 public class Compiler {
   public static void main(String[] args) throws Exception {
@@ -48,5 +53,6 @@ public class Compiler {
     //   System.out.print(statement.field1() + " ");
     //   System.out.println(statement.field2() + " ");
     // }
+    throw new SemanticError("parser error lol");
   }
 }
