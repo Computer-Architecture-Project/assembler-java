@@ -16,7 +16,9 @@ public class Compiler {
   public static void main(String[] args) throws IOException {
     Path path = Path.of("src/examples/assembly.txt");
     String text = Files.readString(path);
+    // System.out.println(text);
     Lexer lexer = new Lexer(text);
+    // lexer.log();
     Parser parser = new Parser(lexer);
     ParsedTree tree = parser.parse();
     // for (Instruction<?, ?, ?> statement : tree.initial.statements) {
@@ -39,12 +41,12 @@ public class Compiler {
     // }
     SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(tree);
     Program program = semanticAnalyzer.analyze();
-    for (Instruction<?, ?, ?>statement : program.statements) {
-      System.out.print(statement.address() + " ");
-      System.out.print(statement.command() + " ");
-      System.out.print(statement.field0() + " ");
-      System.out.print(statement.field1() + " ");
-      System.out.println(statement.field2() + " ");
-    }
+    // for (Instruction<?, ?, ?>statement : program.statements) {
+    //   System.out.print(statement.address() + " ");
+    //   System.out.print(statement.command() + " ");
+    //   System.out.print(statement.field0() + " ");
+    //   System.out.print(statement.field1() + " ");
+    //   System.out.println(statement.field2() + " ");
+    // }
   }
 }

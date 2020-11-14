@@ -129,4 +129,13 @@ public class Lexer {
     }
     return new Token<Void>(TokenType.EOF, null);
   }
+
+  public void log() {
+    Token<?> token = this.getNextToken();
+    while (this.currentCharacter != null) {
+      System.out.println(token.type + " " + token.value);
+      token = this.getNextToken();
+    }
+    System.out.println(token.type + " " + token.value);
+  }
 }
