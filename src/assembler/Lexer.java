@@ -2,6 +2,7 @@ package assembler;
 
 import assembler.Token.Token;
 import assembler.Token.TokenType;
+import error.LexerError;
 
 public class Lexer {
   private String text;
@@ -137,5 +138,10 @@ public class Lexer {
       token = this.getNextToken();
     }
     System.out.println(token.type + " " + token.value);
+  }
+
+  private void error() throws LexerError {
+    String message = "Lexer error on " + this.currentCharacter + "( " + this.line + ": " + this.column + " )";
+    throw new LexerError(message);
   }
 }

@@ -53,6 +53,5 @@ public class Compiler {
     //   System.out.print(statement.field1() + " ");
     //   System.out.println(statement.field2() + " ");
     // }
-    throw new SemanticError("parser error lol");
   }
 }

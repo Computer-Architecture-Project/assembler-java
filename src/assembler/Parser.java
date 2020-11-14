@@ -20,6 +20,8 @@ import assembler.AbstractSyntaxTree.Number;
 import assembler.AbstractSyntaxTree.Offset;
 import assembler.Token.Token;
 import assembler.Token.TokenType;
+import error.ErrorCode;
+import error.ParserError;
 
 public class Parser {
   private Lexer lexer;
@@ -44,10 +46,10 @@ public class Parser {
   }
 
   // Check Token Type Before Get Next Token
-  private void eat(Object type) {
+  private void eat(Object type) throws ParserError {
     if (type == null) {
       this.currentToken = this.getNextToken();
-    } if (type instanceof TokenType) {
+    } else if (type instanceof TokenType) {
       TokenType tokenType = (TokenType)type;
       if (tokenType == null || this.currentToken.type == tokenType) {
         this.currentToken = this.getNextToken();
@@ -58,23 +60,23 @@ public class Parser {
           this.currentToken = this.getNextToken();
       }
     } else {
-      // TODO: throw
+      this.error(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
     }
   }
 
-  public Label label() {
+  public Label label() throws ParserError {
     Label node = new Label(this.currentToken);
     this.eat(TokenType.WORD);
     return node;
   }
 
-  public Register register() {
+  public Register register() throws ParserError {
     Register node = new Register(this.currentToken);
     this.eat(TokenType.INT);
     return node;
   }
 
-  public Unary unary() {
+  public Unary unary() throws ParserError {
     Unary node = null;
 
     if (this.currentToken.type == TokenType.PLUS || this.currentToken.type == TokenType.MINUS) {
@@ -85,20 +87,20 @@ public class Parser {
     return node;
   }
 
-  public Number number() {
+  public Number number() throws ParserError {
     Number node = new Number(this.currentToken);
     this.eat(TokenType.INT);
     return node;
   }
 
-  public Offset offset() {
+  public Offset offset() throws ParserError {
     Unary unaryNode = this.unary();
     Number numberNode = this.number();
     Offset node = new Offset(unaryNode, numberNode);
     return node;
   }
 
-  public Object field() {
+  public Object field() throws ParserError {
     Object node;
 
     if (
@@ -114,7 +116,7 @@ public class Parser {
     return node;
   }
 
-  public Command opcode() {
+  public Command opcode() throws ParserError {
     Command node = new Command(this.currentToken);
     this.eat(TokenType.MNEMONIC());
     return node;
@@ -127,7 +129,7 @@ public class Parser {
     return node;
   }
 
-  public RType rType() {
+  public RType rType() throws ParserError {
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Register field0Node = this.register();
@@ -137,7 +139,7 @@ public class Parser {
     return new RType(addressNode, opcodeNode, field0Node, field1Node, field2Node);
   }
 
-  public IType iType() {
+  public IType iType() throws ParserError {
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Register field0Node = this.register();
@@ -147,7 +149,7 @@ public class Parser {
     return new IType(addressNode, opcodeNode, field0Node, field1Node, field2Node);
   }
 
-  public JType jType() {
+  public JType jType() throws ParserError {
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Register field0Node = this.register();
@@ -156,21 +158,21 @@ public class Parser {
     return new JType(addressNode, opcodeNode, field0Node, field1Node);
   }
 
-  public OType oType() {
+  public OType oType() throws ParserError {
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
 
     return new OType(addressNode, opcodeNode);
   }
 
-  public FillType fillType() {
+  public FillType fillType() throws ParserError {
     Integer addressNode = this.address();
     Command opcodeNode = this.opcode();
     Object fieldNode = this.field();
     return new FillType(addressNode, opcodeNode, fieldNode);
   }
 
-  public Instruction<?, ?, ?> instruction() {
+  public Instruction<?, ?, ?> instruction() throws ParserError {
     if (TokenType.R_TYPE().contains(this.currentToken.type)) {
       return this.rType();
     }
@@ -191,11 +193,11 @@ public class Parser {
       return this.fillType();
     }
 
-    // throw error
+    this.error(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
     return null;
   }
 
-  private void skipComment() {
+  private void skipComment() throws ParserError {
     while (
       this.currentToken.type != TokenType.EOL && 
       this.currentToken.type != TokenType.EOF
@@ -204,7 +206,7 @@ public class Parser {
     }
   }
 
-  public Instruction<?, ?, ?> statement() {
+  public Instruction<?, ?, ?> statement() throws ParserError {
     Instruction<?, ?, ?> instructionNode = this.instruction();
     this.skipComment();
 
@@ -215,28 +217,31 @@ public class Parser {
     return instructionNode;
   }
 
-  public ArrayList<Instruction<?, ?, ?>> statementList() {
+  public ArrayList<Instruction<?, ?, ?>> statementList() throws ParserError {
     ArrayList<Instruction<?, ?, ?>> statements = new ArrayList<Instruction<?, ?, ?>>();
     while (TokenType.MNEMONIC().contains(this.currentToken.type)) {
       statements.add(this.statement());
     }
 
     // throw statement list is empty
+    if(statements.size() == 0) {
+      this.error(ErrorCode.UNEXPECTED_COMMAND, this.currentToken);
+    }
 
     return statements;
   }
 
-  public Method method() {
+  public Method method() throws ParserError {
     Label labelNode = this.label();
     ArrayList<Instruction<?, ?, ?>> statementsNode = this.statementList();
     return new Method(labelNode, statementsNode);
   }
 
-  public Initial initial() {
+  public Initial initial() throws ParserError {
     return new Initial(this.statementList());
   }
 
-  public ParsedTree program() {
+  public ParsedTree program() throws ParserError {
     Initial initialNode = null;
 
     if (TokenType.MNEMONIC().contains(this.currentToken.type)) {
@@ -253,9 +258,16 @@ public class Parser {
     return new ParsedTree(initialNode, methods);
   }
 
-  public ParsedTree parse() {
+  public ParsedTree parse() throws ParserError {
     ParsedTree node = this.program();
-    // throw not end of file error
+    if(this.currentToken.type != TokenType.EOF) {
+      this.error(ErrorCode.UNEXPECTED_TOKEN, this.currentToken);
+    }
     return node;
+  }
+
+  private void error(ErrorCode errorCode, Token token) throws ParserError {
+    String message = errorCode.value + " -> " + token;
+    throw new ParserError(message, errorCode, token);
   }
 }
