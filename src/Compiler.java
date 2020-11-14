@@ -13,7 +13,7 @@ import assembler.AbstractSyntaxTree.ParsedTree.ParsedTree;
 import assembler.Program.Program;
 
 public class Compiler {
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws Exception {
     Path path = Path.of("src/examples/assembly.txt");
     String text = Files.readString(path);
     // System.out.println(text);
