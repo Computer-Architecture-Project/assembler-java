@@ -1,5 +1,4 @@
 package binary;
-import assembler.AbstractSyntaxTree.Command;
 
 public class Instruction {
   public String command;
@@ -9,19 +8,26 @@ public class Instruction {
   public Binary field1;
   public Binary field2;
 
-  public Instruction(Command command, Integer ...args) {
-    this.command = (String) command.value;
+  public Instruction(String command, Integer ...args) {
+    this.command = command;
+
+    System.out.println(this.command);
+    for (Integer arg: args) System.out.println(arg);
+    System.out.println();
 
     // TODO: handle error
     try {
       this.setInstruction(this.command, args);
     } catch (IllegalArgumentException exception) {
-      Binary bin = new Binary(this.getOpcodeWithCommand(this.command).getBinString(), 32);
-      this.initWithBin(bin);
+      throw exception;
+      // Binary opcode = this.getOpcodeWithCommand(this.command);
+      // Binary bin = new Binary(opcode.getBinString(), 32);
+      // this.initWithBin(bin);
     }
   }
 
   private void setInstruction(String command, Integer... args) {
+    System.out.println("[Set Instruction]");
     String type = this.getTypeWithCommand(command);
     switch (type) {
       case "RType": this.setRType(command, args); break;
@@ -38,6 +44,7 @@ public class Instruction {
   // }
 
   public void initWithBin(Binary bin) {
+    System.out.println("[Init With Bin]");
     this.opcode = bin.getRange(22, 24);
     this.command = this.getCommandWithOpcode(this.opcode.getInt());
     String type = this.getTypeWithCommand(this.command);
@@ -87,7 +94,7 @@ public class Instruction {
     
     this.field0 = new Binary(params[0], 3);
     this.field1 = new Binary(params[1], 3);
-    this.field2 = new Binary(params[2], 16); // TODO: Change to TwoComplement
+    // this.field2 = new Binary(params[2], 16); // TODO: Change to TwoComplement
   }
 
   private void setJType(String command, Integer... params) {
@@ -106,7 +113,7 @@ public class Instruction {
   private void setFillType(String command, Integer... params) {
     this.type = getTypeWithCommand(command);
     
-    this.field0 = new Binary(params[0], 32);
+    // this.field0 = new Binary(params[0], 32); // TwoComplement
   }
 
   public Binary binary() {
@@ -148,8 +155,9 @@ public class Instruction {
       "0b0000000" +  
       this.opcode.getBinString() + 
       this.field0.getBinString() + 
-      this.field1.getBinString() + 
-      this.field2.getBinString()
+      this.field1.getBinString() +
+      ""
+      // this.field2.getBinString() 
     );
   }
 
@@ -235,6 +243,9 @@ public class Instruction {
       case "noop":
         return "OType";
     
+      case ".fill":
+        return "FillType";
+  
       default:
         return null;
     }
@@ -265,7 +276,10 @@ public class Instruction {
 
       case "noop":
         return new Binary(0b111, 3);
-    
+
+      case ".fill":
+        return null;
+
       default:
         return null;
     }

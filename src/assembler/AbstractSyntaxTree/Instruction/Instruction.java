@@ -9,8 +9,8 @@ import assembler.AbstractSyntaxTree.Unary;
 import assembler.AbstractSyntaxTree.Number;
 
 public abstract class Instruction<F0, F1, F2> extends AST {
-  private Integer address;
-  private Command command;
+  public Integer address;
+  public Command command;
   protected F0 field0;
   protected F1 field1;
   protected F2 field2;
@@ -27,13 +27,13 @@ public abstract class Instruction<F0, F1, F2> extends AST {
     return this.address;
   }
 
-  public Object command() {
-    return this.command.value;
+  public String command() {
+    return (String) this.command.value;
   }
 
   public Object field0() {
     if (this.field0 instanceof Register) {
-      return ((Register)this.field0).value;
+      return (Integer) ((Register)this.field0).value;
     }
 
     return null;
@@ -41,7 +41,7 @@ public abstract class Instruction<F0, F1, F2> extends AST {
 
   public Object field1() {
     if (this.field1 instanceof Register) {
-      return ((Register)this.field1).value;
+      return (Integer) ((Register)this.field1).value;
     }
 
     return null;
@@ -49,7 +49,7 @@ public abstract class Instruction<F0, F1, F2> extends AST {
 
   public Object field2() {
     if (this.field2 instanceof Register) {
-      return ((Register)this.field2).value;
+      return (Integer) ((Register)this.field2).value;
     } else if (this.field2 instanceof Label) {
       return ((Label)this.field2).value;
     }
@@ -62,7 +62,7 @@ public abstract class Instruction<F0, F1, F2> extends AST {
       case 0: {
         if (this.field0 instanceof Label) {
           
-          return ((Label)this.field0).value;
+          return (Label) this.field0;
 
         } else if (this.field0 instanceof Offset) {
           Unary unary = ((Offset)this.field0).unary;
@@ -76,7 +76,7 @@ public abstract class Instruction<F0, F1, F2> extends AST {
       case 1: {
         if (this.field1 instanceof Label) {
 
-          return ((Label)this.field1).value;
+          return (Label) this.field1;
 
         } else if (this.field1 instanceof Offset) {
           Unary unary = ((Offset)this.field1).unary;
@@ -90,7 +90,7 @@ public abstract class Instruction<F0, F1, F2> extends AST {
       case 2: {
         if (this.field2 instanceof Label) {
 
-          return ((Label)this.field2).value;
+          return (Label) this.field2;
 
         } else if (this.field2 instanceof Offset) {
           Unary unary = ((Offset)this.field2).unary;
