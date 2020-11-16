@@ -16,7 +16,31 @@ public class Binary2C {
   }
 
   public void setValue(String bin) {
-    this.data = Long.parseLong(bin.replaceAll("0b", ""), 2);
+    // this.data = Long.parseLong(bin.replaceAll("0b", ""), 2);
+    String s = bin.replaceAll("0b", "");
+    char[] c = s.toCharArray();
+
+    System.out.println("input: "+s);
+
+    // Find first '1' index
+    int firstOne = -1;
+    for (int i = s.length() - 1 ; i >= 0; i--) {
+      if (c[i] == '1') {
+        firstOne = i;
+        break;
+      }
+    }
+    System.out.println(firstOne);
+    // Flip bits
+    for (int i = firstOne - 1; i >= 0; i--) {
+      c[i] = c[i] == '0' ? '1' : '0';
+    }
+
+    String newS = new String(c);
+    this.data = Long.parseLong(newS, 2);
+
+    System.out.println("output: "+newS);
+
     this.bitsEval();
   }
 
@@ -35,7 +59,7 @@ public class Binary2C {
     String s = Long.toBinaryString(sData);
     char[] c = s.toCharArray();
     if (s.length() > this.bits) {
-      String result = new String(Arrays.copyOfRange(c, s.length() - this.bits , s.length()));
+      String result = new String(Arrays.copyOfRange(c, s.length() - this.bits, s.length()));
       return result;
     }
     if (s.length() == this.bits) {
@@ -54,20 +78,20 @@ public class Binary2C {
     return new String(result);
   }
 
-  public Binary getRange(int start, int end) {
+  public Binary2C getRange(int start, int end) {
     String s = Long.toBinaryString(this.data);
     char[] c = s.toCharArray();
     String newValue = new String(Arrays.copyOfRange(c, start, end));
 
-    return new Binary(newValue);
+    return new Binary2C(newValue);
   }
 
-  public Binary add(Binary b) {
-    return new Binary(this.getData() + b.getData());
+  public Binary2C add(Binary2C b) {
+    return new Binary2C(this.getData() + b.getData());
   }
 
-  public Binary sub(Binary b) {
-    return new Binary(this.getData() - b.getData());
+  public Binary2C sub(Binary2C b) {
+    return new Binary2C(this.getData() - b.getData());
   }
 
   private void bitsEval() {
