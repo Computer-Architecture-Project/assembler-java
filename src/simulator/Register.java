@@ -3,7 +3,7 @@ package simulator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-public class Register implements Iterable{
+public class Register implements Iterable<Object>{
     private ArrayList<Object> register;
     
     public Register() {
