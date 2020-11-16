@@ -20,7 +20,7 @@ public class Binary2C {
     String s = bin.replaceAll("0b", "");
     char[] c = s.toCharArray();
 
-    System.out.println("input: "+s);
+    // System.out.println("input: "+s);
 
     // Find first '1' index
     int firstOne = -1;
@@ -30,7 +30,7 @@ public class Binary2C {
         break;
       }
     }
-    System.out.println(firstOne);
+    // System.out.println(firstOne);
     // Flip bits
     for (int i = firstOne - 1; i >= 0; i--) {
       c[i] = c[i] == '0' ? '1' : '0';
@@ -39,8 +39,8 @@ public class Binary2C {
     String newS = (new String(c));
     this.data = Long.parseLong(newS, 2) * (s.charAt(0) == '1' ? -1 : 1);
 
-    System.out.println("output: ["+newS+"]");
-    System.out.println(this.data);
+    // System.out.println("output: ["+newS+"]");
+    // System.out.println(this.data);
 
     // this.bitsEval();
   }
