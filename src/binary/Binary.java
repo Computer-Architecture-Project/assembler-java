@@ -30,7 +30,6 @@ public class Binary {
   }
 
   public String getBinString() {
-    // this.bitsEval();
     String s = Long.toBinaryString(this.data >= 0 ? this.data : this.data * -1);
     char[] c = s.toCharArray();
     if (s.length() >= this.bits) {
