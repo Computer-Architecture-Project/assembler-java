@@ -79,50 +79,14 @@ public class Binary2C {
   }
 
   public String getBinStringRange(int start, int end) {
-    String s = Long.toBinaryString(this.data);
-    char[] c = Arrays.copyOfRange(s.toCharArray(), start, end);
-    int available = 0;
-    for (char x : c){
-      if (x == '1' || x == '0') {available++;}
-    }
-    char[] c2 = new char[available];
-    int j = 0;
-    for (char x : c){
-      if (x == '1' || x == '0') {
-        c2[j] = x;
-        j++;
-      }
-    }
-    char[] c3 = new char[end-start+1];
-    for (int i = 0 ; i< end-start+1 ; i++) {
-      if (i > available-1) {
-        c3[(end-start)-i] = '0';
-      }
-      else {
-        c3[(end-start)-i] = c2[1];
-      }
-    }
-    String newValue = new String(c3);
-    return newValue;
+    String s = this.getBinString();
+    s = new StringBuilder(s).reverse().toString();
+    s = new StringBuilder(new String(Arrays.copyOfRange(s.toCharArray(), start, end+1))).reverse().toString();
+    return s;
   }
 
   public Binary2C getRange(int start, int end) {
-    String s = Long.toBinaryString(this.data);
-    char[] c = Arrays.copyOfRange(s.toCharArray(), start, end);
-    int available = 0;
-    for (char x : c){
-      if (x == '1' || x == '0') {available++;}
-    }
-    char[] c2 = new char[available];
-    int j = 0;
-    for (char x : c){
-      if (x == '1' || x == '0') {
-        c2[j] = x;
-        j++;
-      }
-    }
-    String newValue = new String(c2);
-    return new Binary2C(newValue);
+    return new Binary2C(this.getBinStringRange(start, end));
   }
 
   public Binary2C add(Binary2C b) {
