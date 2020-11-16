@@ -78,6 +78,13 @@ public class Binary2C {
     return new String(result);
   }
 
+  public String getBiStringRange(int start, int end) {
+    String s = Long.toBinaryString(this.data);
+    char[] c = s.toCharArray();
+    String newValue = new String(Arrays.copyOfRange(c, start, end));
+    return newValue;
+  }
+
   public Binary2C getRange(int start, int end) {
     String s = Long.toBinaryString(this.data);
     char[] c = s.toCharArray();
