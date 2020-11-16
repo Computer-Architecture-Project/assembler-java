@@ -52,11 +52,8 @@ public class Compiler {
     // }
     Interpreter interpreter = new Interpreter(program);
     ArrayList<binary.Instruction> binary = interpreter.interpret();
-    // for(binary.Instruction bin: binary) {
-    //   System.out.println(bin.binary().getBinString());
-    // }
-
-    Binary binary2 = new Binary("0b000");
-    System.out.println(binary2.getRange(0, 32));
+    for(binary.Instruction bin: binary) {
+      System.out.println(bin.binary().getBinString());
+    }
   }
 }

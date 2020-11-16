@@ -151,11 +151,12 @@ public class Instruction {
   }
 
   private Binary binIType() {
+    System.out.println(this.opcode.getBinStringRange(0, 3));
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinStringRange(22, 24) + 
-      ((Binary)this.field0).getBinStringRange(19, 21) + 
-      ((Binary)this.field1).getBinStringRange(16, 18) +
+      this.opcode.getBinStringRange(0, 2) + 
+      ((Binary)this.field0).getBinStringRange(0, 2) + 
+      ((Binary)this.field1).getBinStringRange(0, 2) +
       ((Binary2C)this.field2).getBinStringRange(0, 15) 
     );
   }
