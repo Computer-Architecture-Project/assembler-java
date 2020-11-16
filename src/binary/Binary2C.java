@@ -36,21 +36,22 @@ public class Binary2C {
       c[i] = c[i] == '0' ? '1' : '0';
     }
 
-    String newS = new String(c);
-    this.data = Long.parseLong(newS, 2);
+    String newS = (new String(c));
+    this.data = Long.parseLong(newS, 2) * (s.charAt(0) == '1' ? -1 : 1);
 
-    System.out.println("output: "+newS);
+    System.out.println("output: ["+newS+"]");
+    System.out.println(this.data);
 
-    this.bitsEval();
+    // this.bitsEval();
   }
 
   public void setValue(long bin) {
     this.data = bin;
-    this.bitsEval();
+    // this.bitsEval();
   }
 
   public long getData() {
-    this.bitsEval();
+    // this.bitsEval();
     return data;
   }
 
@@ -97,8 +98,8 @@ public class Binary2C {
     return new Binary2C(this.getData() - b.getData());
   }
 
-  private void bitsEval() {
-    // Recalculate data value accroding to bit digits
-    this.data = Long.parseLong(this.getBinString(), 2);
-  }
+  // private void bitsEval() {
+  //   // Recalculate data value accroding to bit digits
+  //   this.data = Long.parseLong(this.getBinString(), 2);
+  // }
 }

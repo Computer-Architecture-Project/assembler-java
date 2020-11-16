@@ -16,16 +16,16 @@ public class Binary {
 
   public void setValue(String bin) {
     this.data = Long.parseLong(bin.replaceAll("0b", ""), 2);
-    this.bitsEval();
+    // this.bitsEval();
   }
 
   public void setValue(long bin) {
     this.data = bin;
-    this.bitsEval();
+    // this.bitsEval();
   }
 
   public long getData() {
-    this.bitsEval();
+    // this.bitsEval();
     return data;
   }
 
@@ -67,8 +67,8 @@ public class Binary {
     return new Binary(this.getData() - b.getData());
   }
 
-  private void bitsEval() {
-    // Recalculate data value accroding to bit digits
-    this.data = Long.parseLong(this.getBinString(), 2);
-  }
+  // private void bitsEval() {
+  //   // Recalculate data value accroding to bit digits
+  //   this.data = Long.parseLong(this.getBinString(), 2);
+  // }
 }
