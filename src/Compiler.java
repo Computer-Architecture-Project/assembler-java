@@ -1,3 +1,5 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,10 +16,11 @@ import assembler.AbstractSyntaxTree.ParsedTree.ParsedTree;
 import assembler.Program.Program;
 import binary.Binary;
 import binary.Binary2C;
+import simulator.Simulator;
 
 public class Compiler {
   public static void main(String[] args) throws Exception {
-    Path path = Path.of("src/examples/assembly.txt");
+    Path path = Path.of("src/examples/assembly1.txt");
     String text = Files.readString(path);
     // System.out.println(text);
     Lexer lexer = new Lexer(text);
@@ -51,12 +54,20 @@ public class Compiler {
     //   System.out.print(statement.field1() + " ");
     //   System.out.println(statement.field2() + " ");
     // }
+    BufferedWriter writer = new BufferedWriter(new FileWriter("src/results/result.txt"));
+
     Interpreter interpreter = new Interpreter(program);
     ArrayList<Long> binary = interpreter.interpret();
     for(Long bin: binary) {
       System.out.println(bin);
+      writer.write(bin + "\n");
     }
 
-    // System.out.println((new Binary2C("0b110")).getData());
+    writer.close();
+
+    // System.out.println((new Binary2C("0b111")).getBinString());
+    // System.out.println((new Binary2C("0b111")).getData());
+    
+
   }
 }

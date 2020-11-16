@@ -44,11 +44,20 @@ public class Instruction {
   // }
 
   public Long toInteger() {
-    return this.binary().getData();
+    Object bin = this.binary();
+    if (bin instanceof Binary) {
+      return ((Binary)bin).getData();
+    }
+
+    if (bin instanceof Binary2C) {
+      return ((Binary2C)this.binary()).getData();
+    }
+
+    return null;
   }
 
   public void initWithBin(Binary bin) {
-    System.out.println("[Init With Bin]");
+    // System.out.println("[Init With Bin]");
     this.opcode = bin.getRange(22, 24);
     this.command = this.getCommandWithOpcode((int) this.opcode.getData());
     String type = this.getTypeWithCommand(this.command);
@@ -117,10 +126,11 @@ public class Instruction {
   private void setFillType(String command, Integer... params) {
     this.type = getTypeWithCommand(command);
     
-    this.field0 = new Binary2C(Integer.toBinaryString(params[0])); // TwoComplement
+    // System.out.println(params[0]);
+    this.field0 = new Binary2C(params[0]); // TwoComplement
   }
 
-  public Binary binary() {
+  public Object binary() {
     String type = this.getTypeWithCommand(this.command);
     switch (type) {
       case "RType": 
@@ -183,9 +193,9 @@ public class Instruction {
     );
   }
 
-  private Binary binFillType() {
-    System.out.println(((Binary2C)this.field0).getBinString() + "\n\n");
-    return new Binary(
+  private Binary2C binFillType() {
+    // System.out.println(((Binary2C)this.field0).getBinString() + "\n\n");
+    return new Binary2C(
       "0b" +
       ((Binary2C)this.field0).getBinString()
     );

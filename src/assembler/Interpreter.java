@@ -25,27 +25,27 @@ public class Interpreter {
 
   private binary.Instruction instructStatement(Instruction<?, ?, ?> statement) {
     if (statement instanceof RType) {
-      System.out.println("[R]");
+      // System.out.println("[R]");
       return this.initRType((RType) statement);
     }
 
     if (statement instanceof IType) {
-      System.out.println("[I]");
+      // System.out.println("[I]");
       return this.initIType((IType) statement);
     }
 
     if (statement instanceof JType) {
-      System.out.println("[J]");
+      // System.out.println("[J]");
       return this.initJType((JType) statement);
     }
 
     if (statement instanceof OType) {
-      System.out.println("[O]");
+      // System.out.println("[O]");
       return this.initOType((OType) statement);
     }
 
     if (statement instanceof FillType) {
-      System.out.println("[FILL]");
+      // System.out.println("[FILL]");
       return this.initFillType((FillType) statement);
     }
 

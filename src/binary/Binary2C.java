@@ -47,7 +47,7 @@ public class Binary2C {
   }
 
   public long getData() {
-    return data;
+    return this.data;
   }
 
   public String getBinString() {
