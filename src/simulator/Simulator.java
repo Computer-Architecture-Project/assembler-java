@@ -127,7 +127,7 @@ public class Simulator {
         Integer index = 0;
         for(Instruction mem: this.memory) {
             // TODO: Check for Mem 
-            list += "mem[" + index + "]:" + mem.binary().getInt() + "\n";
+            // list += "mem[" + index + "]:" + mem.binary().getInt() + "\n";
             index++;
         }
         return list;

@@ -49,8 +49,8 @@ public class Compiler {
     //   System.out.print(statement.field1() + " ");
     //   System.out.println(statement.field2() + " ");
     // }
-    // Interpreter interpreter = new Interpreter(program);
-    // ArrayList<binary.Instruction> binary = interpreter.interpret();
+    Interpreter interpreter = new Interpreter(program);
+    ArrayList<binary.Instruction> binary = interpreter.interpret();
     // for(binary.Instruction bin: binary) {
     //   System.out.println(bin.binary().getBinString());
     // }
