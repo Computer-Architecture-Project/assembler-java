@@ -2,6 +2,9 @@ package simulator;
 
 import simulator.Register;
 import java.util.ArrayList;
+
+import binary.Binary;
+import binary.Binary2C;
 import binary.Instruction;
 import simulator.Memory;
 
@@ -12,7 +15,7 @@ public class Simulator {
     private Boolean end;
     public Integer count;
 
-    public Simulator(ArrayList<Instruction> statements) {
+    public Simulator(ArrayList<Long> statements) {
         this.pc = 0;
         this.register = new Register();
         this.memory = new Memory(statements);
@@ -37,7 +40,7 @@ public class Simulator {
         this.pc += 1;
     }
 
-    public Object loadReg(Object field) {
+    public Register loadReg(Object field) {
         // Integer reg = field.Int();
         // Object data = this.register.getRegister(reg);
         // return data;
@@ -125,9 +128,9 @@ public class Simulator {
     public String initMemoryLog() {
         String list = "";
         Integer index = 0;
-        for(Instruction mem: this.memory) {
+        for(Long mem: this.memory) {
             // TODO: Check for Mem 
-            // list += "mem[" + index + "]:" + mem.binary().getInt() + "\n";
+            list += "mem[" + index + "]:" + mem + "\n";
             index++;
         }
         return list;
@@ -147,9 +150,9 @@ public class Simulator {
 
         index=0;
         list += "\tregisters:\n";
-        for(Object reg: this.register) {
+        for(Binary2C reg: this.register) {
             // TODO: Check for Reg : TwoComplement 
-            list += "\t\treg[" + index + "]:" + reg + "\n";
+            list += "\t\treg[" + index + "]:" + reg.getData() + "\n";
             index++;
         }
 

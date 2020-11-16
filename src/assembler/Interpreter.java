@@ -108,11 +108,11 @@ public class Interpreter {
     );
   }
 
-  public ArrayList<binary.Instruction> interpret() {
-    ArrayList<binary.Instruction> machineLang = new ArrayList<binary.Instruction>();
+  public ArrayList<Long> interpret() {
+    ArrayList<Long> machineLang = new ArrayList<Long>();
 
     for(Instruction<?, ?, ?> statement : program.statements) {
-      binary.Instruction machineCode = this.instructStatement(statement);
+      Long machineCode = this.instructStatement(statement).toInteger();
       machineLang.add(machineCode);
     }
 

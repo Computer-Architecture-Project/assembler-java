@@ -3,14 +3,12 @@ package simulator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import binary.Instruction;
 
-
-public class Memory implements Iterable<Instruction> {
+public class Memory implements Iterable<Long> {
   // Instruction of binary
-  private ArrayList<Instruction> memory;
+  private ArrayList<Long> memory;
 
-  public Memory(ArrayList<Instruction> statements) {
+  public Memory(ArrayList<Long> statements) {
     this.memory = statements;
   }
 
@@ -22,11 +20,11 @@ public class Memory implements Iterable<Instruction> {
   }
 
   public <T> T getMemory(Integer address) {
-    Instruction mem = this.memory.get(address);
+    Long mem = this.memory.get(address);
     return (T) mem;
   }
 
-  public void setMemory(Integer address, Instruction data) {
+  public void setMemory(Integer address, Long data) {
     if (address >= this.memory.size()) {
       Integer space = address - this.memory.size() + 1;
       this.allocateMemory(space);
@@ -36,7 +34,7 @@ public class Memory implements Iterable<Instruction> {
   }
 
   @Override
-  public Iterator<Instruction> iterator() {
+  public Iterator<Long> iterator() {
     return this.memory.iterator();
   }
 }

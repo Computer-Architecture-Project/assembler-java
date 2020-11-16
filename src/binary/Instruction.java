@@ -11,9 +11,9 @@ public class Instruction {
   public Instruction(String command, Integer ...args) {
     this.command = command;
 
-    System.out.println(this.command);
-    for (Integer arg: args) System.out.println(arg);
-    System.out.println();
+    // System.out.println(this.command);
+    // for (Integer arg: args) System.out.println(arg);
+    // System.out.println();
 
     // TODO: handle error
     try {
@@ -27,7 +27,7 @@ public class Instruction {
   }
 
   private void setInstruction(String command, Integer... args) {
-    System.out.println("[Set Instruction]");
+    // System.out.println("[Set Instruction]");
     String type = this.getTypeWithCommand(command);
     switch (type) {
       case "RType": this.setRType(command, args); break;
@@ -42,6 +42,10 @@ public class Instruction {
   // public String bin() {
   //   return this.binary().getBinString();
   // }
+
+  public Long toInteger() {
+    return this.binary().getData();
+  }
 
   public void initWithBin(Binary bin) {
     System.out.println("[Init With Bin]");
@@ -142,16 +146,16 @@ public class Instruction {
   private Binary binRType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinStringRange(22, 24) + 
-      ((Binary)this.field0).getBinStringRange(19, 21) + 
-      ((Binary)this.field1).getBinStringRange(16, 18) + 
+      this.opcode.getBinStringRange(0, 2) + 
+      ((Binary)this.field0).getBinStringRange(0, 2) + 
+      ((Binary)this.field1).getBinStringRange(0, 2) + 
       "0000000000000" + 
       ((Binary)this.field2).getBinStringRange(0, 15)
     );
   }
 
   private Binary binIType() {
-    System.out.println(this.opcode.getBinStringRange(0, 3));
+    // System.out.println(this.opcode.getBinStringRange(0, 2));
     return new Binary(
       "0b0000000" +  
       this.opcode.getBinStringRange(0, 2) + 
@@ -164,9 +168,9 @@ public class Instruction {
   private Binary binJType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinStringRange(22, 24) + 
-      ((Binary)this.field0).getBinStringRange(19, 21) + 
-      ((Binary)this.field1).getBinStringRange(16, 18) + 
+      this.opcode.getBinStringRange(0, 2) + 
+      ((Binary)this.field0).getBinStringRange(0, 2) + 
+      ((Binary)this.field1).getBinStringRange(0, 2) + 
       "0000000000000000"
     );
   }
@@ -174,12 +178,13 @@ public class Instruction {
   private Binary binOType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinStringRange(22, 24) + 
+      this.opcode.getBinStringRange(0, 2) + 
       "0000000000000000000000"
     );
   }
 
   private Binary binFillType() {
+    // System.out.println(((Binary2C)this.field0).getData() + "\n\n");
     return new Binary(
       "0b" +
       ((Binary2C)this.field0).getBinString()

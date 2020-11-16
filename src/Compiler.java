@@ -13,6 +13,7 @@ import assembler.AbstractSyntaxTree.ParsedTree.Method;
 import assembler.AbstractSyntaxTree.ParsedTree.ParsedTree;
 import assembler.Program.Program;
 import binary.Binary;
+import binary.Binary2C;
 
 public class Compiler {
   public static void main(String[] args) throws Exception {
@@ -51,9 +52,11 @@ public class Compiler {
     //   System.out.println(statement.field2() + " ");
     // }
     Interpreter interpreter = new Interpreter(program);
-    ArrayList<binary.Instruction> binary = interpreter.interpret();
-    for(binary.Instruction bin: binary) {
-      System.out.println(bin.binary().getBinString());
-    }
+    // ArrayList<Long> binary = interpreter.interpret();
+    // for(Long bin: binary) {
+    //   System.out.println(bin);
+    // }
+
+    System.out.println((new Binary2C(0b110)).getData());
   }
 }
