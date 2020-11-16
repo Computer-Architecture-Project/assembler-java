@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Set;
 
+import assembler.Interpreter;
 import assembler.Lexer;
 import assembler.Parser;
 import assembler.SemanticAnalyzer;
@@ -41,12 +42,17 @@ public class Compiler {
     // }
     SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(tree);
     Program program = semanticAnalyzer.analyze();
-    for (Instruction<?, ?, ?>statement : program.statements) {
-      System.out.print(statement.address() + " ");
-      System.out.print(statement.command() + " ");
-      System.out.print(statement.field0() + " ");
-      System.out.print(statement.field1() + " ");
-      System.out.println(statement.field2() + " ");
+    // for (Instruction<?, ?, ?>statement : program.statements) {
+    //   System.out.print(statement.address() + " ");
+    //   System.out.print(statement.command() + " ");
+    //   System.out.print(statement.field0() + " ");
+    //   System.out.print(statement.field1() + " ");
+    //   System.out.println(statement.field2() + " ");
+    // }
+    Interpreter interpreter = new Interpreter(program);
+    ArrayList<binary.Instruction> binary = interpreter.interpret();
+    for(binary.Instruction bin: binary) {
+      System.out.println(bin.binary().getBinString());
     }
   }
 }
