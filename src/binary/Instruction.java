@@ -150,7 +150,7 @@ public class Instruction {
       ((Binary)this.field0).getBinStringRange(0, 2) + 
       ((Binary)this.field1).getBinStringRange(0, 2) + 
       "0000000000000" + 
-      ((Binary)this.field2).getBinStringRange(0, 15)
+      ((Binary)this.field2).getBinStringRange(0, 2)
     );
   }
 
@@ -184,7 +184,7 @@ public class Instruction {
   }
 
   private Binary binFillType() {
-    // System.out.println(((Binary2C)this.field0).getData() + "\n\n");
+    System.out.println(((Binary2C)this.field0).getBinString() + "\n\n");
     return new Binary(
       "0b" +
       ((Binary2C)this.field0).getBinString()

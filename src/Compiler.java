@@ -52,11 +52,11 @@ public class Compiler {
     //   System.out.println(statement.field2() + " ");
     // }
     Interpreter interpreter = new Interpreter(program);
-    // ArrayList<Long> binary = interpreter.interpret();
-    // for(Long bin: binary) {
-    //   System.out.println(bin);
-    // }
+    ArrayList<Long> binary = interpreter.interpret();
+    for(Long bin: binary) {
+      System.out.println(bin);
+    }
 
-    System.out.println((new Binary2C(0b110)).getData());
+    // System.out.println((new Binary2C("0b110")).getData());
   }
 }
