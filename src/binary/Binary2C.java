@@ -19,23 +19,21 @@ public class Binary2C {
     String s = bin.replaceAll("0b", "");
     char[] c = s.toCharArray();
     String newS = "";
-    if (s.charAt(0) == '1')
-    {
+    if (s.charAt(0) == '1') {
       // Find first '1' index
-    int firstOne = -1;
-    for (int i = s.length() - 1 ; i >= 0; i--) {
-      if (c[i] == '1') {
-        firstOne = i;
-        break;
+      int firstOne = -1;
+      for (int i = s.length() - 1; i >= 0; i--) {
+        if (c[i] == '1') {
+          firstOne = i;
+          break;
+        }
       }
-    }
-    // Flip bits
-    for (int i = firstOne - 1; i >= 0; i--) {
-      c[i] = c[i] == '0' ? '1' : '0';
-    }
-    newS = (new String(c));
-    }
-    else {
+      // Flip bits
+      for (int i = firstOne - 1; i >= 0; i--) {
+        c[i] = c[i] == '0' ? '1' : '0';
+      }
+      newS = (new String(c));
+    } else {
       newS = s;
     }
 
@@ -79,7 +77,7 @@ public class Binary2C {
   public String getBinStringRange(int start, int end) {
     String s = this.getBinString();
     s = new StringBuilder(s).reverse().toString();
-    s = new StringBuilder(new String(Arrays.copyOfRange(s.toCharArray(), start, end+1))).reverse().toString();
+    s = new StringBuilder(new String(Arrays.copyOfRange(s.toCharArray(), start, end + 1))).reverse().toString();
     return s;
   }
 
