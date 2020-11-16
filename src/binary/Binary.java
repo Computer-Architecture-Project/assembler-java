@@ -3,52 +3,34 @@ package binary;
 import java.util.Arrays;
 
 public class Binary {
-  private int data;
-  private int bits;
+  private long data;
+  private int bits = 32;
+
+  public Binary(long bin) {
+    this.setValue(bin);
+  }
 
   public Binary(String bin) {
     this.setValue(bin);
   }
 
-  public Binary(int bin) {
-    this.setValue(bin);
-  }
-
-  public Binary(String bin, int bits) {
-    this.setValue(bin, bits);
-  }
-
-  public Binary(int bin, int bits) {
-    this.setValue(bin, bits);
-  }
-
   public void setValue(String bin) {
-    this.setValue(bin, bin.length());
-  }
-
-  public void setValue(int bin) {
-    this.setValue(Integer.toString(bin,2));
-  }
-
-  public void setValue(String bin, int bits) {
-    this.data = Integer.parseInt(bin, 2);
-    this.bits = bits;
+    this.data = Long.parseLong(bin.replaceAll("0b", ""), 2);
     this.bitsEval();
   }
 
-  public void setValue(int bin, int bits) {
+  public void setValue(long bin) {
     this.data = bin;
-    this.bits = bits;
     this.bitsEval();
   }
 
-  public int getInt() {
+  public long getData() {
     this.bitsEval();
     return data;
   }
 
   public String getBinString() {
-    String s = Integer.toBinaryString(this.data);
+    String s = Long.toBinaryString(this.data >= 0 ? this.data : this.data * -1);
     char[] c = s.toCharArray();
     if (s.length() >= this.bits) {
       return new String(Arrays.copyOfRange(c, 0, s.length() - (s.length() - this.bits)));
@@ -59,7 +41,7 @@ public class Binary {
       if (cI >= 0) {
         result[this.bits - 1 - i] = c[cI];
       } else {
-        result[this.bits - 1 - i] = '0';
+        result[this.bits - 1 - i] = (this.data >= 0 ? '0' : '1');
       }
 
     }
@@ -67,23 +49,23 @@ public class Binary {
   }
 
   public Binary getRange(int start, int end) {
-    String s = Integer.toBinaryString(this.data);
+    String s = Long.toBinaryString(this.data);
     char[] c = s.toCharArray();
     String newValue = new String(Arrays.copyOfRange(c, start, end));
 
-    return new Binary(newValue, newValue.length());
+    return new Binary(newValue);
   }
 
   public Binary add(Binary b) {
-    return new Binary(this.getInt()+b.getInt());
+    return new Binary(this.getData() + b.getData());
   }
 
   public Binary sub(Binary b) {
-    return new Binary(this.getInt()-b.getInt());
+    return new Binary(this.getData() - b.getData());
   }
 
   private void bitsEval() {
     // Recalculate data value accroding to bit digits
-    this.data = Integer.parseInt(this.getBinString(), 2);
+    this.data = Long.parseLong(this.getBinString(), 2);
   }
 }
