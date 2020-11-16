@@ -4,9 +4,9 @@ public class Instruction {
   public String command;
   public String type;
   public Binary opcode;
-  public Binary field0;
-  public Binary field1;
-  public Binary field2;
+  public Object field0;
+  public Object field1;
+  public Object field2;
 
   public Instruction(String command, Integer ...args) {
     this.command = command;
@@ -46,7 +46,7 @@ public class Instruction {
   public void initWithBin(Binary bin) {
     System.out.println("[Init With Bin]");
     this.opcode = bin.getRange(22, 24);
-    this.command = this.getCommandWithOpcode(this.opcode.getInt());
+    this.command = this.getCommandWithOpcode((int) this.opcode.getData());
     String type = this.getTypeWithCommand(this.command);
 
     switch (type) {
@@ -83,26 +83,26 @@ public class Instruction {
     this.opcode = this.getOpcodeWithCommand(command);
     this.type = getTypeWithCommand(command);
     
-    this.field0 = new Binary(params[0], 3);
-    this.field1 = new Binary(params[1], 3);
-    this.field2 = new Binary(params[2], 3);
+    this.field0 = new Binary(params[0]);
+    this.field1 = new Binary(params[1]);
+    this.field2 = new Binary(params[2]);
   }
 
   private void setIType(String command, Integer... params) {
     this.opcode = this.getOpcodeWithCommand(command);
     this.type = getTypeWithCommand(command);
     
-    this.field0 = new Binary(params[0], 3);
-    this.field1 = new Binary(params[1], 3);
-    // this.field2 = new Binary(params[2], 16); // TODO: Change to TwoComplement
+    this.field0 = new Binary(params[0]);
+    this.field1 = new Binary(params[1]);
+    this.field2 = new Binary2C(params[2]); // TODO: Change to TwoComplement
   }
 
   private void setJType(String command, Integer... params) {
     this.opcode = this.getOpcodeWithCommand(command);
     this.type = getTypeWithCommand(command);
     
-    this.field0 = new Binary(params[0], 3);
-    this.field1 = new Binary(params[1], 3);
+    this.field0 = new Binary(params[0]);
+    this.field1 = new Binary(params[1]);
   }
 
   private void setOType(String command, Integer... params) {
@@ -143,10 +143,10 @@ public class Instruction {
     return new Binary(
       "0b0000000" +  
       this.opcode.getBinString() + 
-      this.field0.getBinString() + 
-      this.field1.getBinString() + 
+      ((Binary)this.field0).getBinString() + 
+      ((Binary)this.field1).getBinString() + 
       "0000000000000" + 
-      this.field2.getBinString()
+      ((Binary)this.field2).getBinString()
     );
   }
 
@@ -154,10 +154,9 @@ public class Instruction {
     return new Binary(
       "0b0000000" +  
       this.opcode.getBinString() + 
-      this.field0.getBinString() + 
-      this.field1.getBinString() +
-      ""
-      // this.field2.getBinString() 
+      ((Binary)this.field0).getBinString() + 
+      ((Binary)this.field1).getBinString() +
+      ((Binary2C)this.field2).getBinString() 
     );
   }
 
@@ -165,8 +164,8 @@ public class Instruction {
     return new Binary(
       "0b0000000" +  
       this.opcode.getBinString() + 
-      this.field0.getBinString() + 
-      this.field1.getBinString() + 
+      ((Binary)this.field0).getBinString() + 
+      ((Binary)this.field1).getBinString() + 
       "0000000000000000"
     );
   }
@@ -182,7 +181,7 @@ public class Instruction {
   private Binary binFillType() {
     return new Binary(
       "0b" +
-      this.field0.getBinString()
+      ((Binary2C)this.field0).getBinString()
     );
   }
   
@@ -254,28 +253,28 @@ public class Instruction {
   private Binary getOpcodeWithCommand(String command) {
     switch (command) {
       case "add":
-        return new Binary(0b000, 3);
+        return new Binary(0b000);
 
       case "nand":
-        return new Binary(0b001, 3);
+        return new Binary(0b001);
 
       case "lw":
-        return new Binary(0b010, 3);
+        return new Binary(0b010);
 
       case "sw":
-        return new Binary(0b011, 3);
+        return new Binary(0b011);
 
       case "beq":
-        return new Binary(0b100, 3);
+        return new Binary(0b100);
 
       case "jalr":
-        return new Binary(0b101, 3);
+        return new Binary(0b101);
 
       case "halt":
-        return new Binary(0b110, 3);
+        return new Binary(0b110);
 
       case "noop":
-        return new Binary(0b111, 3);
+        return new Binary(0b111);
 
       case ".fill":
         return null;
