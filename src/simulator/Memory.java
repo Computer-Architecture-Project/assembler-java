@@ -6,7 +6,7 @@ import java.util.Iterator;
 import binary.Instruction;
 
 
-public class Memory<I> implements Iterable<Instruction> {
+public class Memory implements Iterable<Instruction> {
   // Instruction of binary
   private ArrayList<Instruction> memory;
 
@@ -21,9 +21,9 @@ public class Memory<I> implements Iterable<Instruction> {
     }
   }
 
-  public I getMemory(Integer address) {
+  public <T> T getMemory(Integer address) {
     Instruction mem = this.memory.get(address);
-    return (I) mem;
+    return (T) mem;
   }
 
   public void setMemory(Integer address, Instruction data) {
