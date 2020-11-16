@@ -12,6 +12,7 @@ import assembler.AbstractSyntaxTree.Instruction.Instruction;
 import assembler.AbstractSyntaxTree.ParsedTree.Method;
 import assembler.AbstractSyntaxTree.ParsedTree.ParsedTree;
 import assembler.Program.Program;
+import binary.Binary;
 
 public class Compiler {
   public static void main(String[] args) throws Exception {
@@ -54,5 +55,8 @@ public class Compiler {
     // for(binary.Instruction bin: binary) {
     //   System.out.println(bin.binary().getBinString());
     // }
+
+    Binary binary2 = new Binary("0b000");
+    System.out.println(binary2.getRange(0, 32));
   }
 }

@@ -113,7 +113,7 @@ public class Instruction {
   private void setFillType(String command, Integer... params) {
     this.type = getTypeWithCommand(command);
     
-    // this.field0 = new Binary(params[0], 32); // TwoComplement
+    this.field0 = new Binary2C(Integer.toBinaryString(params[0])); // TwoComplement
   }
 
   public Binary binary() {
@@ -142,30 +142,30 @@ public class Instruction {
   private Binary binRType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinString() + 
-      ((Binary)this.field0).getBinString() + 
-      ((Binary)this.field1).getBinString() + 
+      this.opcode.getBinStringRange(22, 24) + 
+      ((Binary)this.field0).getBinStringRange(19, 21) + 
+      ((Binary)this.field1).getBinStringRange(16, 18) + 
       "0000000000000" + 
-      ((Binary)this.field2).getBinString()
+      ((Binary)this.field2).getBinStringRange(0, 15)
     );
   }
 
   private Binary binIType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinString() + 
-      ((Binary)this.field0).getBinString() + 
-      ((Binary)this.field1).getBinString() +
-      ((Binary2C)this.field2).getBinString() 
+      this.opcode.getBinStringRange(22, 24) + 
+      ((Binary)this.field0).getBinStringRange(19, 21) + 
+      ((Binary)this.field1).getBinStringRange(16, 18) +
+      ((Binary2C)this.field2).getBinStringRange(0, 15) 
     );
   }
 
   private Binary binJType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinString() + 
-      ((Binary)this.field0).getBinString() + 
-      ((Binary)this.field1).getBinString() + 
+      this.opcode.getBinStringRange(22, 24) + 
+      ((Binary)this.field0).getBinStringRange(19, 21) + 
+      ((Binary)this.field1).getBinStringRange(16, 18) + 
       "0000000000000000"
     );
   }
@@ -173,7 +173,7 @@ public class Instruction {
   private Binary binOType() {
     return new Binary(
       "0b0000000" +  
-      this.opcode.getBinString() + 
+      this.opcode.getBinStringRange(22, 24) + 
       "0000000000000000000000"
     );
   }

@@ -2,8 +2,6 @@ package binary;
 
 import java.util.Arrays;
 
-import jdk.javadoc.internal.tool.Start;
-
 public class Binary {
   private long data;
   private int bits = 32;
