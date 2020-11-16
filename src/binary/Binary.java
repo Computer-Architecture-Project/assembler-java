@@ -2,8 +2,6 @@ package binary;
 
 import java.util.Arrays;
 
-import jdk.javadoc.internal.tool.Start;
-
 public class Binary {
   private long data;
   private int bits = 32;
@@ -50,7 +48,7 @@ public class Binary {
     return new String(result);
   }
 
-  public String getBiStringRange(int start, int end) {
+  public String getBinStringRange(int start, int end) {
     String s = Long.toBinaryString(this.data);
     char[] c = s.toCharArray();
     String newValue = new String(Arrays.copyOfRange(c, start, end));
