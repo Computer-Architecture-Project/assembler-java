@@ -30,7 +30,8 @@ public class Binary {
   }
 
   public String getBinString() {
-    String s = Long.toBinaryString(this.data);
+    // this.bitsEval();
+    String s = Long.toBinaryString(this.data >= 0 ? this.data : this.data * -1);
     char[] c = s.toCharArray();
     if (s.length() >= this.bits) {
       return new String(Arrays.copyOfRange(c, 0, s.length() - (s.length() - this.bits)));
@@ -41,7 +42,7 @@ public class Binary {
       if (cI >= 0) {
         result[this.bits - 1 - i] = c[cI];
       } else {
-        result[this.bits - 1 - i] = '0';
+        result[this.bits - 1 - i] = (this.data >= 0 ? '0' : '1');
       }
 
     }
