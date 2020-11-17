@@ -1,6 +1,5 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -61,14 +60,17 @@ public class Compiler {
 
     Interpreter interpreter = new Interpreter(program);
     ArrayList<Long> binary = interpreter.interpret();
+    BufferedWriter writer = new BufferedWriter(new FileWriter("src/results/binary.txt"));
     for(Long bin: binary) {
       System.out.println(bin);
+      writer.write(bin + "\n");
     }
+    writer.close();
 
 
     Simulator simulator = new Simulator(binary);
     String logs = simulator.execute();
-    BufferedWriter writer = new BufferedWriter(new FileWriter("src/results/logs.txt"));
+    writer = new BufferedWriter(new FileWriter("src/results/logs.txt"));
     writer.write(logs);
     writer.close();
   }

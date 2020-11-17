@@ -78,9 +78,10 @@ public class Instruction {
   }
 
   private void extractBinRType(Binary bin) {
-    this.field0 = bin.getRange(0, 2);
-    this.field1 = bin.getRange(19, 21);
-    this.field2 = bin.getRange(16, 18);
+    this.field0 = bin.getRange(19, 21);
+    this.field1 = bin.getRange(16, 18);
+    // this.field2 = bin.getRange(16, 18);
+    this.field2 = bin.getRange(0, 2);
   }
 
   private void extractBinIType(Binary bin) {

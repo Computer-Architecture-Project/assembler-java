@@ -11,7 +11,6 @@ import assembler.AbstractSyntaxTree.Instruction.OType;
 import assembler.AbstractSyntaxTree.Instruction.RType;
 import assembler.Program.Program;
 import assembler.Token.TokenType;
-import binary.Binary2C;
 
 public class Interpreter {
   public Program program;
@@ -83,7 +82,7 @@ public class Interpreter {
       field2 = (Integer) statement.field2();
     }
     
-    System.out.println( "[IType]" + field2);
+    // System.out.println( "[IType]" + field2);
 
     return new binary.Instruction(
       statement.command(),
@@ -124,9 +123,25 @@ public class Interpreter {
     ArrayList<Long> machineLang = new ArrayList<Long>();
 
     for(Instruction<?, ?, ?> statement : program.statements) {
-      // if (this.instructStatement(statement).field2 instanceof Binary2C) {
-      //   System.out.println(((Binary2C)this.instructStatement(statement).field2).getData());
-      // }
+      // if (this.instructStatement(statement).field0 instanceof Binary2C) 
+      //   System.out.println("[0]" + ((Binary2C)this.instructStatement(statement).field0).getData());
+      // else if (this.instructStatement(statement).field0 instanceof Binary) 
+      // System.out.println("[0]" +((Binary)this.instructStatement(statement).field0).getData());
+
+      // if (this.instructStatement(statement).field1 instanceof Binary2C) 
+      //   System.out.println("[1]" +((Binary2C)this.instructStatement(statement).field1).getData());
+      // else if (this.instructStatement(statement).field1 instanceof Binary) 
+      //   System.out.println("[1]" +((Binary)this.instructStatement(statement).field1).getData());
+
+      // if (this.instructStatement(statement).field2 instanceof Binary2C) 
+      //   System.out.println("[2]" +((Binary2C)this.instructStatement(statement).field2).getData());
+      // else if (this.instructStatement(statement).field2 instanceof Binary) 
+      //   System.out.println("[2]" +((Binary)this.instructStatement(statement).field2).getData());
+
+      // System.out.println();
+      
+      
+
       Long machineCode = this.instructStatement(statement).toInteger();
       machineLang.add(machineCode);
     }

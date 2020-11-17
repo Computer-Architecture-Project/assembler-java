@@ -3,8 +3,6 @@ package simulator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import binary.Instruction;
-
 
 public class Memory implements Iterable<Long> {
   // Instruction of binary

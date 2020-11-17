@@ -47,6 +47,7 @@ public class Simulator {
         } else {
             regNo = ((Binary2C)field).getData();
         }
+        // System.out.println("[REG NO] " + regNo);
         Binary2C data = this.register.getRegister((int) regNo);
         return data;
         // return null;
@@ -68,6 +69,9 @@ public class Simulator {
     public void executeAdd(Instruction instruction) {
         Binary2C rsData = this.loadReg(instruction.field0);
         Binary2C rtData = this.loadReg(instruction.field1);
+
+        // System.out.println("[REG] " + ((Binary) instruction.field0).getData());
+        // System.out.println("[REG] " + ((Binary) instruction.field0).getData());
 
         // System.out.println("[ADD] " + rsData.getData());
         // System.out.println("[ADD] " + rtData.getData());
@@ -99,6 +103,7 @@ public class Simulator {
 
 
         // Object data = this.memory.getMemory((int) addr.getData(), TwoComplement);
+        // System.out.println("[GET MEM]"+addr.getData());
         Long mem = this.memory.getMemory((int) addr.getData());
         long data = (new Binary2C(mem)).getData();
         this.writeReg((int) data, instruction.field1);
@@ -112,6 +117,7 @@ public class Simulator {
 
         Binary2C addr = offset.add(rsData);
 
+        // System.out.println("[SET MEM]"+addr.getData());
         this.memory.setMemory((int) addr.getData(), rtData.getData());
         this.nextInstruction();
     }
@@ -121,7 +127,7 @@ public class Simulator {
         Binary2C rtData = this.loadReg(instruction.field1);
         Binary2C offset = (Binary2C) instruction.field2;
 
-        // System.out.println(offset.getData());
+        // System.out.println(rsData.getData() + " " + rtData.getData());
         if(rsData.getData() == rtData.getData()) {
             // System.out.println("[BEQ OK]");
             
@@ -194,8 +200,11 @@ public class Simulator {
         while(true) {
             Long mem = this.memory.getMemory(this.pc);
             Instruction instruction = new Instruction(mem);
+            // System.out.println("[0]" + ((Binary) instruction.field0).getData());
+            // System.out.println("[1]" + ((Binary) instruction.field1).getData());
             logs += this.simulationLogs();
-            System.out.println(this.pc);
+            // System.out.println(logs);
+            // System.out.println("[" + this.pc + "]" + mem);
             this.executeBinary(instruction);
             this.count += 1 ;
             if(this.end) {
