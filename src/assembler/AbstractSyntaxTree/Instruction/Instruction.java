@@ -11,9 +11,9 @@ import assembler.AbstractSyntaxTree.Number;
 public abstract class Instruction<F0, F1, F2> extends AST {
   public Integer address;
   public Command command;
-  protected F0 field0;
-  protected F1 field1;
-  protected F2 field2;
+  public F0 field0;
+  public F1 field1;
+  public F2 field2;
 
   public Instruction(Integer address, Command command) {
     this.address = address;

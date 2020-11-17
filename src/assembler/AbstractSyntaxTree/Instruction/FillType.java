@@ -1,6 +1,7 @@
 package assembler.AbstractSyntaxTree.Instruction;
 
 import assembler.AbstractSyntaxTree.Command;
+import assembler.AbstractSyntaxTree.Label;
 
 public class FillType extends Instruction<Object, Void, Void> {
   public FillType(Integer address, Command command, Object field0 ) {
@@ -9,6 +10,10 @@ public class FillType extends Instruction<Object, Void, Void> {
   }
 
   public Object field0() {
-    return this.offset(0);
+    if (this.offset(0) instanceof Label) {
+      return (Label) this.offset(0);
+    } else {
+      return (Integer) this.offset(0);
+    }
   }
 }

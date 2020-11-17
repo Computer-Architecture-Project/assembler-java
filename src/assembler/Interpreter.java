@@ -64,19 +64,25 @@ public class Interpreter {
   private binary.Instruction initIType(IType statement) {
     Integer field2;
   
-    if (statement.field2() instanceof Label) {
+    if (statement.field2 instanceof Label) {
       Label label = (Label) statement.field2();
       Integer address = this.getAddressWithLabel(label);
 
+      // System.out.println( "[IType]" + address);
       if (statement.command.token.type == TokenType.BEQ) {
         field2 = address - statement.address() - 1;
+        ;
+        // System.out.println( "[IType]" + field2);
       } else {
         field2 = address;
+        // System.out.println( "[IType]" + field2);
         // return null;
       }
     } else {
       field2 = (Integer) statement.field2();
     }
+    
+    // System.out.println( "[IType]" + field2);
 
     return new binary.Instruction(
       statement.command(),
@@ -113,10 +119,29 @@ public class Interpreter {
     );
   }
 
-  public ArrayList<Long> interpret() {
+  public ArrayList<Long> interpret() throws Exception {
     ArrayList<Long> machineLang = new ArrayList<Long>();
 
     for(Instruction<?, ?, ?> statement : program.statements) {
+      // if (this.instructStatement(statement).field0 instanceof Binary2C) 
+      //   System.out.println("[0]" + ((Binary2C)this.instructStatement(statement).field0).getData());
+      // else if (this.instructStatement(statement).field0 instanceof Binary) 
+      // System.out.println("[0]" +((Binary)this.instructStatement(statement).field0).getData());
+
+      // if (this.instructStatement(statement).field1 instanceof Binary2C) 
+      //   System.out.println("[1]" +((Binary2C)this.instructStatement(statement).field1).getData());
+      // else if (this.instructStatement(statement).field1 instanceof Binary) 
+      //   System.out.println("[1]" +((Binary)this.instructStatement(statement).field1).getData());
+
+      // if (this.instructStatement(statement).field2 instanceof Binary2C) 
+      //   System.out.println("[2]" +((Binary2C)this.instructStatement(statement).field2).getData());
+      // else if (this.instructStatement(statement).field2 instanceof Binary) 
+      //   System.out.println("[2]" +((Binary)this.instructStatement(statement).field2).getData());
+
+      // System.out.println();
+      
+      
+
       Long machineCode = this.instructStatement(statement).toInteger();
       machineLang.add(machineCode);
     }

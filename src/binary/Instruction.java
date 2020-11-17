@@ -19,11 +19,16 @@ public class Instruction {
     try {
       this.setInstruction(this.command, args);
     } catch (IllegalArgumentException exception) {
-      throw exception;
-      // Binary opcode = this.getOpcodeWithCommand(this.command);
-      // Binary bin = new Binary(opcode.getBinString(), 32);
-      // this.initWithBin(bin);
+      Binary opcode = this.getOpcodeWithCommand(this.command);
+      Binary bin = new Binary(opcode.getBinString());
+      this.initWithBin(bin);
     }
+  }
+
+  public Instruction(Long dec) {
+    // System.out.println("[Extract]" + dec);
+    Binary bin = new Binary(dec);
+    this.initWithBin(bin);
   }
 
   private void setInstruction(String command, Integer... args) {
@@ -46,10 +51,12 @@ public class Instruction {
   public Long toInteger() {
     Object bin = this.binary();
     if (bin instanceof Binary) {
+      // System.out.println(((Binary)bin).getBinString());
       return ((Binary)bin).getData();
     }
 
     if (bin instanceof Binary2C) {
+      // System.out.println(((Binary2C)bin).getBinString());
       return ((Binary2C)this.binary()).getData();
     }
 
@@ -71,16 +78,18 @@ public class Instruction {
   }
 
   private void extractBinRType(Binary bin) {
-    this.field0 = bin.getRange(0, 2);
-    this.field1 = bin.getRange(19, 21);
-    this.field2 = bin.getRange(16, 18);
+    this.field0 = bin.getRange(19, 21);
+    this.field1 = bin.getRange(16, 18);
+    // this.field2 = bin.getRange(16, 18);
+    this.field2 = bin.getRange(0, 2);
   }
 
   private void extractBinIType(Binary bin) {
     this.field0 = bin.getRange(19, 21);
     this.field1 = bin.getRange(16, 18);
     // TwoComplement
-    // this.field2 = bin.getRange(0, 15);
+    
+    this.field2 = new Binary2C(bin.getData()).getRange(0, 15);
   }
 
   private void extractBinJType(Binary bin) {

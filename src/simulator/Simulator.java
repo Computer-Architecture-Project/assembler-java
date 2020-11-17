@@ -1,12 +1,10 @@
 package simulator;
 
-import simulator.Register;
 import java.util.ArrayList;
 
 import binary.Binary;
 import binary.Binary2C;
 import binary.Instruction;
-import simulator.Memory;
 
 public class Simulator {
     public Integer pc;
@@ -24,6 +22,7 @@ public class Simulator {
     }
 
     public void executeBinary(Instruction instruction) {
+        // System.out.println(instruction.command);
         switch(instruction.command) {
             case "add": this.executeAdd(instruction); break;
             case "nand": this.executeNand(instruction); break;
@@ -36,93 +35,123 @@ public class Simulator {
         }
     }
 
-    public void nextInsttruction() {
+    public void nextInstruction() {
         this.pc += 1;
     }
 
-    public Register loadReg(Object field) {
-        // Integer reg = field.Int();
-        // Object data = this.register.getRegister(reg);
-        // return data;
-        return null;
+    public Binary2C loadReg(Object field) {
+        // long regNo = ((Binary2C)field).getData();
+        long regNo;
+        if (field instanceof Binary) {
+            regNo = ((Binary)field).getData();
+        } else {
+            regNo = ((Binary2C)field).getData();
+        }
+        // System.out.println("[REG NO] " + regNo);
+        Binary2C data = this.register.getRegister((int) regNo);
+        return data;
+        // return null;
     }
 
-    public void writeReg(Object data, Object field) {
-        // Integer reg = field.Int();
-        // this.register.setRegister(reg, data);
+    public void writeReg(Integer data, Object field) {
+        long regNo;
+        if (field instanceof Binary) {
+            regNo = ((Binary)field).getData();
+        } else {
+            regNo = ((Binary2C)field).getData();
+        }
+        
+        this.register.setRegister((int) regNo, data);
 
     }
 
     //Execute Instrruction
     public void executeAdd(Instruction instruction) {
-        Object rsData = this.loadReg(instruction.field0);
-        Object rtData = this.loadReg(instruction.field1);
+        Binary2C rsData = this.loadReg(instruction.field0);
+        Binary2C rtData = this.loadReg(instruction.field1);
 
-        // Object data = rsData + rtData;
+        // System.out.println("[REG] " + ((Binary) instruction.field0).getData());
+        // System.out.println("[REG] " + ((Binary) instruction.field0).getData());
 
-        // this.writeReg(data, inst.field2);
-        this.nextInsttruction();
+        // System.out.println("[ADD] " + rsData.getData());
+        // System.out.println("[ADD] " + rtData.getData());
+        Binary2C data = rsData.add(rtData);
+        // System.out.println("[ADD] " + data.getData());
+
+        this.writeReg((int) data.getData(), instruction.field2);
+        this.nextInstruction();
     }
 
     public void executeNand(Instruction instruction) {
-        Object rsData = this.loadReg(instruction.field0);
-        Object rtData = this.loadReg(instruction.field1);
+        Binary2C rsData = this.loadReg(instruction.field0);
+        Binary2C rtData = this.loadReg(instruction.field1);
 
-        // Object data = rsData & rtData;
+        long data = ~(rsData.getData() & rtData.getData());
 
-        // this.writeReg(data, inst.field2);
-        this.nextInsttruction();
+        this.writeReg((int) data, instruction.field2);
+        this.nextInstruction();
     }
 
     public void executeLw(Instruction instruction) {
-        Object rsData = this.loadReg(instruction.field0);
-        Object offset = instruction.field2;
+        Binary2C rsData = this.loadReg(instruction.field0);
+        Binary2C offset = (Binary2C) instruction.field2;
+        
+        // System.out.println("[ADD] " + rsData.getData());
+        // System.out.println("[ADD] " + offset.getData());
+        Binary2C addr = rsData.add(offset);
+        // System.out.println("[ADD] " + addr.getData());
 
-        // Object addr = rsData + offset;
 
-        // Object data = this.memory.getMemory(addr.Int, TwoComplement);
-        // this.writeReg(data, inst.field1);
-        this.nextInsttruction();
+        // Object data = this.memory.getMemory((int) addr.getData(), TwoComplement);
+        // System.out.println("[GET MEM]"+addr.getData());
+        Long mem = this.memory.getMemory((int) addr.getData());
+        long data = (new Binary2C(mem)).getData();
+        this.writeReg((int) data, instruction.field1);
+        this.nextInstruction();
     }
 
     public void executeSw(Instruction instruction) {
-        Object rsData = this.loadReg(instruction.field0);
-        Object rtData = this.loadReg(instruction.field1);
-        Object offset = instruction.field2;
+        Binary2C rsData = this.loadReg(instruction.field0);
+        Binary2C rtData = this.loadReg(instruction.field1);
+        Binary2C offset = (Binary2C) instruction.field2;
 
-        // Object addr = offset + rsData;
+        Binary2C addr = offset.add(rsData);
 
-        // this.memory.setMemory(addr.Int, rtData.Int);
-        this.nextInsttruction();
+        // System.out.println("[SET MEM]"+addr.getData());
+        this.memory.setMemory((int) addr.getData(), rtData.getData());
+        this.nextInstruction();
     }
 
     public void executeBeq(Instruction instruction) {
-        Object rsData = this.loadReg(instruction.field0);
-        Object rtData = this.loadReg(instruction.field1);
-        Object offset = instruction.field2;
+        Binary2C rsData = this.loadReg(instruction.field0);
+        Binary2C rtData = this.loadReg(instruction.field1);
+        Binary2C offset = (Binary2C) instruction.field2;
 
-        if(rsData == rtData) {
-            // this.pc += offset.Int + 1;
+        // System.out.println(rsData.getData() + " " + rtData.getData());
+        if(rsData.getData() == rtData.getData()) {
+            // System.out.println("[BEQ OK]");
+            
+            this.pc += ((int) offset.getData()) + 1;
         }else {
-            this.nextInsttruction();
+            this.nextInstruction();
         }
     }
 
     public void executeJalr(Instruction instruction) {
-        Object rsData = this.loadReg(instruction.field0);
+        Binary2C rsData = this.loadReg(instruction.field0);
 
-        Object data = this.pc + 1;
+        Integer data = this.pc + 1;
         this.writeReg(data, instruction.field1);
-        // this.pc = rsData.Int;
+        this.pc = (int) rsData.getData();
     }
 
     public void executeNoop(Instruction instruction) {
-        this.nextInsttruction();
+        this.nextInstruction();
     }
 
     public void executeHalt(Instruction instruction) {
         this.end = true;
-        this.nextInsttruction();
+        this.nextInstruction();
     }
 
     public String initMemoryLog() {
@@ -142,7 +171,7 @@ public class Simulator {
         list += "pc " + this.pc + "\n";
 
         list += "\tmemory:\n";
-        for(Object mem: this.memory) {
+        for(Long mem: this.memory) {
             // TODO: Check for Mem: Instruction
             list += "\t\tmem[" + index + "]:" + mem + "\n";
             index++;
@@ -169,8 +198,13 @@ public class Simulator {
         String logs = this.initMemoryLog();
 
         while(true) {
-            Instruction instruction = this.memory.getMemory(this.pc);
+            Long mem = this.memory.getMemory(this.pc);
+            Instruction instruction = new Instruction(mem);
+            // System.out.println("[0]" + ((Binary) instruction.field0).getData());
+            // System.out.println("[1]" + ((Binary) instruction.field1).getData());
             logs += this.simulationLogs();
+            // System.out.println(logs);
+            // System.out.println("[" + this.pc + "]" + mem);
             this.executeBinary(instruction);
             this.count += 1 ;
             if(this.end) {

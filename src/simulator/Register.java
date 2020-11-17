@@ -15,7 +15,7 @@ public class Register implements Iterable<Binary2C>{
         }
     }
 
-    public Object getRegister(Integer regNo) {
+    public Binary2C getRegister(Integer regNo) {
         return this.register.get(regNo);
     }
 
@@ -25,7 +25,7 @@ public class Register implements Iterable<Binary2C>{
     }
 
 	@Override
-	public Iterator iterator() {
+	public Iterator<Binary2C> iterator() {
 		return this.register.iterator();
 	}
 }

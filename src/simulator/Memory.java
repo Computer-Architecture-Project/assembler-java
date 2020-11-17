@@ -15,13 +15,15 @@ public class Memory implements Iterable<Long> {
   // increase memory size until can set memory at address
   private void allocateMemory(Integer space) {
     for (int i = 0; i < space; i++) {
-      this.memory.add(null);
+      this.memory.add((long) 0);
     }
   }
 
-  public <T> T getMemory(Integer address) {
+  public Long getMemory(Integer address) {
+    // System.out.println(address);
+    // System.out.println("[MEM]" + this.memory.size());
     Long mem = this.memory.get(address);
-    return (T) mem;
+    return mem;
   }
 
   public void setMemory(Integer address, Long data) {

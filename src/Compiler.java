@@ -1,21 +1,15 @@
 import java.io.BufferedWriter;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Set;
 
 import assembler.Interpreter;
 import assembler.Lexer;
 import assembler.Parser;
 import assembler.SemanticAnalyzer;
-import assembler.AbstractSyntaxTree.Instruction.Instruction;
-import assembler.AbstractSyntaxTree.ParsedTree.Method;
 import assembler.AbstractSyntaxTree.ParsedTree.ParsedTree;
 import assembler.Program.Program;
-import binary.Binary;
-import binary.Binary2C;
 import simulator.Simulator;
 
 public class Compiler {
@@ -41,8 +35,17 @@ public class Compiler {
     //     System.out.print(statement.address() + " ");
     //     System.out.print(statement.command() + " ");
     //     System.out.print(statement.field0() + " ");
+    //     if (statement.field0() instanceof Label) {
+    //       System.out.print(((Label) statement.field0()).value + " ");
+    //     } else {
+    //       System.out.print(((Integer) statement.field0()) + " ");
+    //     }
     //     System.out.print(statement.field1() + " ");
-    //     System.out.println(statement.field2());
+    //     if (statement.field2() instanceof Label) {
+    //       System.out.println(((Label) statement.field2()).value);
+    //     } else {
+    //       System.out.println(((Integer) statement.field2()));
+    //     }
     //   }
     // }
     SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer(tree);
@@ -54,20 +57,21 @@ public class Compiler {
     //   System.out.print(statement.field1() + " ");
     //   System.out.println(statement.field2() + " ");
     // }
-    BufferedWriter writer = new BufferedWriter(new FileWriter("src/results/result.txt"));
 
     Interpreter interpreter = new Interpreter(program);
     ArrayList<Long> binary = interpreter.interpret();
+    BufferedWriter writer = new BufferedWriter(new FileWriter("src/results/binary.txt"));
     for(Long bin: binary) {
       System.out.println(bin);
       writer.write(bin + "\n");
     }
-
     writer.close();
 
-    // System.out.println((new Binary2C("0b111")).getBinString());
-    // System.out.println((new Binary2C("0b111")).getData());
-    
 
+    Simulator simulator = new Simulator(binary);
+    String logs = simulator.execute();
+    writer = new BufferedWriter(new FileWriter("src/results/logs.txt"));
+    writer.write(logs);
+    writer.close();
   }
 }
