@@ -1,0 +1,29 @@
+	lw	0	9	n
+	lw	0	10	r
+	lw	0	1	pos1
+	lw	0	2	neg1
+	lw	0	11	subNmi
+	jalr	12	4	
+	halt			
+subNmi1	sw	7	4	stack
+	add	7	1	7
+	lw	0	3	0
+	sw	7	5	stack
+	add	7	1	7
+	sw	7	6	stack
+	add	0	2	5
+	add	5	9	3
+	lw	0	6	3
+	add	7	2	7
+	lw	7	6	stack
+	add	7	2	7
+	lw	7	5	stack
+	add	7	2	7
+	lw	7	4	stack
+	jalr	4	12	
+n	    .fill	7
+r	    .fill	3
+pos1	.fill	1
+neg1	.fill	-1
+subNmi	.fill	subNmi1
+stack	.fill	0

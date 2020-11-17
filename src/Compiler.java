@@ -14,7 +14,7 @@ import simulator.Simulator;
 
 public class Compiler {
   public static void main(String[] args) throws Exception {
-    Path path = Path.of("src/examples/assembly1.txt");
+    Path path = Path.of("src/examples/assembly3.txt");
     String text = Files.readString(path);
     // System.out.println(text);
     Lexer lexer = new Lexer(text);
