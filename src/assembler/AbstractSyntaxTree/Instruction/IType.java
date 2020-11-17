@@ -1,6 +1,7 @@
 package assembler.AbstractSyntaxTree.Instruction;
 
 import assembler.AbstractSyntaxTree.Command;
+import assembler.AbstractSyntaxTree.Label;
 import assembler.AbstractSyntaxTree.Register;
 
 public class IType extends Instruction<Register, Register, Object> {
@@ -12,6 +13,10 @@ public class IType extends Instruction<Register, Register, Object> {
   }
 
   public Object field2() {
-    return this.offset(2);
+    if (this.offset(2) instanceof Label) {
+      return (Label) field2;
+    } else {
+      return (Integer) this.offset(2);
+    }
   }
 }
